@@ -18,17 +18,29 @@
                 }
             }
             if (view_index + options.column.showNum < ths.length - options.column.rightFix){//如果还在范围内
+                var up_btn_flag = true;
+                var down_btn_flag = true;
                 for(var i=0;i<trs.length;i++){
                     var tds = trs.eq(i).children();
                     var hide_ele = tds.eq(view_index + options.column.showNum);
                     options.column.hideFunc(tds.eq(view_index));
+                    //up and down btn deal
+                    if(up_btn_flag && tds.eq(view_index).children().hasClass('up')){
+                        destroyBtnAsClaz(tds.eq(view_index),'up')
+                        createBtn(tds.eq(view_index+1),'up');
+                        up_btn_flag=false;
+                    }else if(down_btn_flag&&tds.eq(view_index).children().hasClass('down')){
+                        destroyBtnAsClaz(tds.eq(view_index),'down')
+                        createBtn(tds.eq(view_index+1),'down');
+                        down_btn_flag=false;
+                    }
                     //隐藏的话就销毁按钮
-                    if(i==0){
-                        destroyBtn(tds.eq(view_index + options.column.showNum-1))
+                    if(trs.eq(i).children().find('.left').length>0){
+                        destroyBtnAsClaz(trs.eq(i).children().eq(view_index + options.column.showNum-1),'right')
                         createBtn(hide_ele,'right');
-                        destroyBtn(ths.eq(view_index))
+                        destroyBtnAsClaz(trs.eq(i).children().eq(view_index),'left')
                         if(view_index + options.column.showNum+1<ths.length - options.column.rightFix){
-                            createBtn(ths.eq(view_index+1),'left');
+                            createBtn(trs.eq(i).children().eq(view_index+1),'left');
                         }
                         
                     }
@@ -52,14 +64,27 @@
             }
             
             if (view_index - options.column.showNum >= options.column.leftFix) {//如果还在范围内
+                var up_btn_flag = true;
+                var down_btn_flag = true;
                 for(var i=0;i<trs.length;i++){
                     var tds = trs.eq(i).children();
                     var hide_ele = tds.eq(view_index - options.column.showNum);
-                    
-                    if(i==0){
-                        destroyBtn(tds.eq(view_index))
+                    //up and down btn deal
+                    if(up_btn_flag && tds.eq(view_index - options.column.showNum+1).children().hasClass('up')){
+                        destroyBtnAsClaz(tds.eq(view_index - options.column.showNum+1),'up')
+                        createBtn(tds.eq(view_index - options.column.showNum),'up');
+                        up_btn_flag=false;
+                    }else if(down_btn_flag&&tds.eq(view_index - options.column.showNum+1).children().hasClass('down')){
+                        destroyBtnAsClaz(tds.eq(view_index - options.column.showNum+1),'down')
+                        createBtn(tds.eq(view_index - options.column.showNum),'down');
+                        down_btn_flag=false;
+                    }
+
+
+                    if(trs.eq(i).children().find('.right').length>0){
+                        destroyBtnAsClaz(tds.eq(view_index),'right')
                         createBtn(hide_ele,'left')
-                        destroyBtn(tds.eq(view_index - options.column.showNum+1))
+                        destroyBtnAsClaz(tds.eq(view_index - options.column.showNum+1),'left')
                         if(view_index - options.column.showNum>options.column.leftFix){
                             createBtn(tds.eq(view_index -1),'right');
                         }
@@ -90,11 +115,24 @@
                 //下面是动画效果
                 options.line.hideFunc(trs.eq(view_index));
                 options.line.showFunc(hide_ele);
-                destroyBtn(trs.eq(view_index).children().eq(0))
+                destroyBtnAsClaz(trs.eq(view_index).children().eq(0),'up')
                 createBtn(hide_ele.children().eq(0),'down')
-                destroyBtn(trs.eq(view_index + options.line.showNum-1).children().eq(0))
+                destroyBtnAsClaz(trs.eq(view_index + options.line.showNum-1).children().eq(0),'down')
                 if(view_index + options.line.showNum+1<trs.length - options.line.bottomFix){
                     createBtn(trs.eq(view_index+1).children().eq(0),'up')
+                }
+                //处理 button
+                if(trs.eq(view_index).find('.left').length>0){//left 和right 同行
+                    var tds_ = trs.eq(view_index).children();
+                    for(var i=0;i<tds_.length;i++){
+                        if(tds_.eq(i).children().hasClass('left')){
+                            destroyBtnAsClaz(tds_.eq(i),'left')
+                            createBtn(trs.eq(view_index+1).children().eq(i),'left')
+                        }else if(tds_.eq(i).children().hasClass('right')){
+                            destroyBtnAsClaz(tds_.eq(i),'right')
+                            createBtn(trs.eq(view_index+1).children().eq(i),'right')
+                        }
+                    }
                 }
             }
         })
@@ -115,11 +153,40 @@
                 options.line.hideFunc(trs.eq(view_index));
                 options.line.showFunc(hide_ele);
 
-                destroyBtn(trs.eq(view_index).children().eq(0))
-                destroyBtn(trs.eq(view_index - options.line.showNum+1).children().eq(0))
+                destroyBtnAsClaz(trs.eq(view_index).children().eq(0),'down')
+                destroyBtnAsClaz(trs.eq(view_index - options.line.showNum+1).children().eq(0),'up')
                 createBtn(hide_ele.children().eq(0),'up');
                 if(view_index - options.line.showNum>options.line.topFix){
                     createBtn(trs.eq(view_index-1).children().eq(0),'down')
+                }
+                
+                /**
+                 * if(trs.eq(view_index).find('.left').length>0){//left 和right 同行
+                    var tds_ = trs.eq(view_index).children();
+                    for(var i=0;i<tds_.length;i++){
+                        if(tds_.eq(i).children().hasClass('left')){
+                            destroyBtnAsClaz(tds_.eq(i).children(),'left')
+                            createBtn(trs.eq(view_index+1).children().eq(i),'left')
+                        }else if(tds_.eq(i).children().hasClass('right')){
+                            destroyBtnAsClaz(tds_.eq(i).children(),'right')
+                            createBtn(trs.eq(view_index+1).children().eq(i),'right')
+                        }
+                    }
+                }
+                 */
+                //处理 button
+                if(trs.eq(view_index - options.line.showNum+1).find('.left').length>0){//left 和right 同行
+                    
+                    var tds_ = trs.eq(view_index - options.line.showNum+1).children();
+                    for(var i=0;i<tds_.length;i++){
+                        if(tds_.eq(i).children().hasClass('left')){
+                            destroyBtnAsClaz(tds_.eq(i),'left')
+                            createBtn(trs.eq(view_index - options.line.showNum).children().eq(i),'left')
+                        }else if(tds_.eq(i).children().hasClass('right')){
+                            destroyBtnAsClaz(tds_.eq(i),'right')
+                            createBtn(trs.eq(view_index - options.line.showNum).children().eq(i),'right')
+                        }
+                    }
                 }
             }
         })
@@ -240,6 +307,8 @@ function initTable(options,that){
 }
 //创建按钮
 function createBtn(parent,claz){
+    if(claz=='left')
+    console.log("=======")
     var btn = $('<button></button>').addClass('btn').addClass(claz);
     btn.css('float','left');
     parent.append(btn);
@@ -250,4 +319,8 @@ function createBtn(parent,claz){
 //销毁按钮
 function destroyBtn(parent){
     parent.find('.btn').remove()
+}
+//销毁指定按钮
+function destroyBtnAsClaz(parent,claz){
+    parent.find('.'+claz).remove()
 }
