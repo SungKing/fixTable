@@ -4,7 +4,7 @@
         init_args_and_table(options,that)
 
         //左移事件
-        $('.left').on('click', function () {
+        $('body').on('click','.left',function(){
             var trs = $(that).find("tr");
 
             //标记
@@ -23,50 +23,59 @@
                     var hide_ele = tds.eq(view_index + options.column.showNum);
                     options.column.hideFunc(tds.eq(view_index));
                     //隐藏的话就销毁按钮
-                    // if(i==0){
-                    //     createBtn(ths.eq(view_index + options.column.showNum),'right');
-                    //     if(view_index + options.column.showNum+1<ths.length - options.column.rightFix){
-                    //         createTdBtn(ths.eq(view_index+1),'left');
-                    //         //ths.eq(view_index+1).append($(this));
-                    //     }
-                    //     //销毁隐藏的按钮
-                    //     //ths.eq(view_index).find('.btn').remove()
-                       
-                    // }
+                    if(i==0){
+                        destroyBtn(tds.eq(view_index + options.column.showNum-1))
+                        createBtn(hide_ele,'right');
+                        destroyBtn(ths.eq(view_index))
+                        if(view_index + options.column.showNum+1<ths.length - options.column.rightFix){
+                            createBtn(ths.eq(view_index+1),'left');
+                        }
+                        
+                    }
                         
                     options.column.showFunc(hide_ele);
                 }
             }
         });
 
-        $('.right').on('click', function () {
+        $('body').on('click','.right', function () {
             var trs = $(that).find("tr");
-            for (var i in trs) {
-                var tds = trs.eq(i).children();
-                var view_index = 0;//移动的元素下标标记
-                for (var j = tds.length - options.column.rightFix - 1; j >= options.column.leftFix; j--) {
-                    var s = tds.eq(j)
-                    if (s.css("display") != "none") {//找到从右边数第一个显示的元素
-                        view_index = j;
-                        break;
-                    }
+            //标记
+            var view_index = 0;//移动的元素下标标记
+            var ths = trs.eq(0).children();
+            for (var j = ths.length - options.column.rightFix - 1; j >= options.column.leftFix; j--) {
+                var s = ths.eq(j)
+                if (s.css("display") != "none") {//找到从右边数第一个显示的元素
+                    view_index = j;
+                    break;
                 }
-                if (view_index - options.column.showNum >= options.column.leftFix) {//如果还在范围内
-                    var hide_ele = tds.eq(view_index - options.column.showNum);
-                    //下面是动画效果,这二者不兼容
-                    options.column.hideFunc(tds.eq(view_index));
-                    options.column.showFunc(hide_ele);
-                    // tds.eq(view_index).fadeToggle();
-                    // hide_ele.fadeToggle();
-                    //下面的是不用动画效果
-                    // hide_ele.css('display',tds.eq(view_index).css("display"));
-                    // tds.eq(view_index).css("display",'none');
-                }
-
             }
+            
+            if (view_index - options.column.showNum >= options.column.leftFix) {//如果还在范围内
+                for(var i=0;i<trs.length;i++){
+                    var tds = trs.eq(i).children();
+                    var hide_ele = tds.eq(view_index - options.column.showNum);
+                    
+                    if(i==0){
+                        destroyBtn(tds.eq(view_index))
+                        createBtn(hide_ele,'left')
+                        destroyBtn(tds.eq(view_index - options.column.showNum+1))
+                        if(view_index - options.column.showNum>options.column.leftFix){
+                            createBtn(tds.eq(view_index -1),'right');
+                        }
+                    }
+                    //下面是动画效果
+                    options.column.hideFunc(tds.eq(view_index));
+                    
+                    options.column.showFunc(hide_ele);
+                    
+                }
+            }
+
+            
         })
 
-        $('.up').on('click', function () {
+        $('body').on('click','.up', function () {
             var trs = $(that).find("tr");
             var view_index = 0;//移动的元素下标标记
             for (var i = options.line.topFix; i < trs.length - options.line.bottomFix; i++) {
@@ -81,15 +90,16 @@
                 //下面是动画效果
                 options.line.hideFunc(trs.eq(view_index));
                 options.line.showFunc(hide_ele);
-                // trs.eq(view_index).fadeToggle()
-                // hide_ele.fadeToggle();
-                //下面的是不用动画效果
-                // hide_ele.css('display',trs.eq(view_index).css('display'));
-                // trs.eq(view_index).css('display','none');
+                destroyBtn(trs.eq(view_index).children().eq(0))
+                createBtn(hide_ele.children().eq(0),'down')
+                destroyBtn(trs.eq(view_index + options.line.showNum-1).children().eq(0))
+                if(view_index + options.line.showNum+1<trs.length - options.line.bottomFix){
+                    createBtn(trs.eq(view_index+1).children().eq(0),'up')
+                }
             }
         })
 
-        $('.down').on('click', function () {
+        $('body').on('click','.down', function () {
             var trs = $(that).find("tr");
             var view_index = 0;//移动的元素下标标记
             for (var i = trs.length - options.line.bottomFix - 1; i >= options.line.topFix; i--) {
@@ -104,11 +114,13 @@
                 //下面是动画效果
                 options.line.hideFunc(trs.eq(view_index));
                 options.line.showFunc(hide_ele);
-                // trs.eq(view_index).fadeToggle()
-                // hide_ele.fadeToggle()
-                //下面的是不用动画效果
-                // hide_ele.css('display',trs.eq(view_index).css('display'));
-                // trs.eq(view_index).css('display','none');
+
+                destroyBtn(trs.eq(view_index).children().eq(0))
+                destroyBtn(trs.eq(view_index - options.line.showNum+1).children().eq(0))
+                createBtn(hide_ele.children().eq(0),'up');
+                if(view_index - options.line.showNum>options.line.topFix){
+                    createBtn(trs.eq(view_index-1).children().eq(0),'down')
+                }
             }
         })
 
@@ -211,45 +223,29 @@ function initTable(options,that){
             upFlag = true;
         }
     }
-    //这里是因为新创建的元素没有绑定click事件。所以先把这些隐藏起来
-    var left_btn = createBtn($(that),'left');
-    left_btn.css("display",'none');
-    var right_btn = createBtn($(that),'right');
-    right_btn.css("display",'none');
-    var up_btn = createBtn($(that),'up');
-    up_btn.css("display",'none');
-    var down_btn = createBtn($(that),'down');
-    down_btn.css("display",'none');
+    
 
     if(upFlag){
         var td_p = trs.eq(options.line.topFix).children().eq(0);
-        createTdBtn(td_p,'up');
+        createBtn(td_p,'up');
 
     }
     if(leftFlag){
         var td_p = trs.eq(0).children().eq(options.column.leftFix);
-        createTdBtn(td_p,'left');
+        createBtn(td_p,'left');
 
     }
 
 
 }
-//创建table的隐形按钮
+//创建按钮
 function createBtn(parent,claz){
     var btn = $('<button></button>').addClass('btn').addClass(claz);
     btn.css('float','left');
     parent.append(btn);
     return btn;
 }
-//创建td里面的btn
-function createTdBtn(td,claz){
-    console.log(td.text())
-    var btn = td.parent('table').children('.'+claz);
-    
-    td.append(btn);
-    //现在要让其显示出来
-    td.find('.btn').css('display','block');
-}
+
 
 //销毁按钮
 function destroyBtn(parent){
