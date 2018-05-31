@@ -291,10 +291,16 @@
 <script>
     $(function () {
         var options2 = {
-            column: {
-                leftFix: 2,
-                showNum: 3,
-                rightFix: 2,
+            showFunc:function(ele){//元素显示函数，会被下面的覆盖掉
+                ele.fadeIn();
+            },
+            hideFunc:function(ele){//元素隐藏函数，会被下面的覆盖掉
+                ele.fadeOut();
+            },
+            column: {//列属性
+                leftFix: 2,//左侧固定的列数
+                showNum: 3,//要显示的列数
+                rightFix: 2,//右侧固定的列数
                 showFunc: function (ele) {
                     ele.fadeIn();
                 },
@@ -302,10 +308,10 @@
                     ele.fadeOut();
                 }
             },
-            line: {
-                topFix: 1,
-                showNum: 5,
-                bottomFix: 0,
+            line: {//行属性
+                topFix: 1,//顶部固定的行
+                showNum: 5,//要显示的行
+                bottomFix: 0,//底部固定的行
                 showFunc: function (ele) {
                     ele.fadeIn();
                 },
