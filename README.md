@@ -42,3 +42,6 @@ var options2 = {
 ```
 $('#example').tableFix(options2);
 ```
+
+## 注意
+

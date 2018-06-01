@@ -4,7 +4,7 @@
         init_args_and_table(options,that)
 
         //左移事件
-        $('body').on('click','.left',function(){
+        $('table').on('click','.left',function(){
             var trs = $(that).find("tr");
 
             //标记
@@ -50,7 +50,7 @@
             }
         });
 
-        $('body').on('click','.right', function () {
+        $('table').on('click','.right', function () {
             var trs = $(that).find("tr");
             //标记
             var view_index = 0;//移动的元素下标标记
@@ -100,7 +100,7 @@
             
         })
 
-        $('body').on('click','.up', function () {
+        $('table').on('click','.up', function () {
             var trs = $(that).find("tr");
             var view_index = 0;//移动的元素下标标记
             for (var i = options.line.topFix; i < trs.length - options.line.bottomFix; i++) {
@@ -137,7 +137,7 @@
             }
         })
 
-        $('body').on('click','.down', function () {
+        $('table').on('click','.down', function () {
             var trs = $(that).find("tr");
             var view_index = 0;//移动的元素下标标记
             for (var i = trs.length - options.line.bottomFix - 1; i >= options.line.topFix; i--) {
@@ -160,20 +160,7 @@
                     createBtn(trs.eq(view_index-1).children().eq(0),'down')
                 }
                 
-                /**
-                 * if(trs.eq(view_index).find('.left').length>0){//left 和right 同行
-                    var tds_ = trs.eq(view_index).children();
-                    for(var i=0;i<tds_.length;i++){
-                        if(tds_.eq(i).children().hasClass('left')){
-                            destroyBtnAsClaz(tds_.eq(i).children(),'left')
-                            createBtn(trs.eq(view_index+1).children().eq(i),'left')
-                        }else if(tds_.eq(i).children().hasClass('right')){
-                            destroyBtnAsClaz(tds_.eq(i).children(),'right')
-                            createBtn(trs.eq(view_index+1).children().eq(i),'right')
-                        }
-                    }
-                }
-                 */
+                
                 //处理 button
                 if(trs.eq(view_index - options.line.showNum+1).find('.left').length>0){//left 和right 同行
                     
