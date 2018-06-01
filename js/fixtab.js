@@ -294,8 +294,6 @@ function initTable(options,that){
 }
 //创建按钮
 function createBtn(parent,claz){
-    if(claz=='left')
-    console.log("=======")
     var btn = $('<button></button>').addClass('btn').addClass(claz);
     btn.css('float','left');
     parent.append(btn);

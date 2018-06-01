@@ -1,6 +1,10 @@
+th,td{
+    position: relative;
+}
 .btn {
-    width: 30px;
+    
     height: 30px;
+    width: 30px;
     border-radius: 50%;
     border: none;
     /* background: rgba(255, 0, 0, 0.3) url('../images/Button-Play.png') */
@@ -8,17 +12,30 @@
     background-size: 100%;
     opacity: 0.4;
     filter:alpha(opacity=40); /* 针对 IE8 以及更早的版本 */
+    position: absolute;
 }
 .btn:hover{
     opacity: 0.8;
     filter:alpha(opacity=80); /* 针对 IE8 以及更早的版本 */
 }
 .left {
-    transform: rotate(180deg)
+    transform: rotate(180deg);
+    left: 0px;
+    top: 0%;
+
 }
 .up {
-    transform: rotate(270deg)
+    transform: rotate(270deg);
+    left: 0%;
+    top: 0%;
 }
 .down{
-    transform: rotate(90deg)
+    transform: rotate(90deg);
+    left: 0%;
+    bottom: 0%;
+}
+
+.right{
+    right: 0%;
+    top: 0%;
 }
