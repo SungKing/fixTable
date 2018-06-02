@@ -25,10 +25,11 @@
     /* Heading and Column Style */
 
     tr,
-    th {
+    th,
+    td {
         border-width: 1px;
         border-style: solid;
-        border-color: rgb(128, 102, 160);
+        border-color: rgb(0, 0, 0);
     }
 
     /* Padding and font style */
@@ -320,29 +321,7 @@
                 }
             }
         }
-        //背景颜色控制
-        var trs = $('#example').find('tr');
-        for (var i = 0; i < trs.length; i++) {
-            var tds = trs.eq(i).children();
-            //背景颜色控制，为了演示直观
-            var r = Math.random() * 255;
-            var g = Math.random() * 255;
-            var b = Math.random() * 255;
-            for (var j = 0; j < tds.length; j++) {
-                //透明色控制
-                var a = j / 10.0;
-                if (a < 0.4)
-                    a += 0.5;
-                else if (a > 0.99) {
-                    a -= 0.5;
-                }
-                //设置背景色
-                tds.eq(j).css("background-color", "rgba(" + r
-                    + "," + g
-                    + "," + b
-                    + "," + a + ")")
-            }
-        }
+        
 
         $('#example').tableFix(options);
     })
