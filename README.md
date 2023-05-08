@@ -19,7 +19,7 @@ var options2 = {
                     ele.fadeIn();
                 },
                 hideFunc: function (ele) {
-                    ele.fadeOut();
+                    ele.hide();
                 }
             },
             line: {//行属性
@@ -30,7 +30,7 @@ var options2 = {
                     ele.fadeIn();
                 },
                 hideFunc: function (ele) {
-                    ele.fadeOut();
+                    ele.hide();
                 }
             }
         }
